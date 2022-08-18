@@ -9,7 +9,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -21,16 +22,17 @@ public class Tema {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	
-	@NotNull(message="O atributo Descrição é obrigatório")
+	@NotBlank(message="O atributo Descrição é obrigatório")
+	@Size(min=3, max=255, message="O atributo Descrição deve conter no mínimo 03 e no máximo 255 caracteres.")
 	private String descricao;
 	
-	@OneToMany(mappedBy="tema", cascade=CascadeType.ALL)
+	@OneToMany(mappedBy="tema", cascade=CascadeType.REMOVE)
 	@JsonIgnoreProperties ("tema")
 	private List<Postagem> postagem;
 	
 	/*Insira os Getters and Setters*/
 	public Long getId() {
-		return this.id;
+		return id;
 	}
 
 	public void setId(Long id) {
@@ -38,7 +40,7 @@ public class Tema {
 	}
 
 	public String getDescricao() {
-		return this.descricao;
+		return descricao;
 	}
 
 	public void setDescricao(String descricao) {
@@ -46,7 +48,7 @@ public class Tema {
 	}
 	
 	public List<Postagem> getPostagem(){
-		return this.postagem;
+		return postagem;
 	}
 	
 	public void setPostagem (List<Postagem> postagem) {

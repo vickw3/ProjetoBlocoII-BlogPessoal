@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+@SuppressWarnings("deprecation")
 @EnableWebSecurity
 public class BasicSecurityConfig extends WebSecurityConfigurerAdapter {
 	
@@ -29,7 +30,7 @@ public class BasicSecurityConfig extends WebSecurityConfigurerAdapter {
 		.authorities("ROLE_USER");
 	}
 @Bean
-public PasswordEncoder passwordEncoder() {
+PasswordEncoder passwordEncoder() {
 	return new BCryptPasswordEncoder();
 }
 @Override
@@ -41,8 +42,7 @@ throws Exception {
 	.antMatchers(HttpMethod.OPTIONS).permitAll()
 	.anyRequest().authenticated()
 	.and().httpBasic()
-	.and().sessionManagement()
-	.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+	.and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 	.and().cors()
 	.and().csrf().disable();
 }

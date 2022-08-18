@@ -16,6 +16,8 @@ import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 @Entity
 @Table(name="tb_usuarios")
 public class Usuario {
@@ -23,23 +25,35 @@ public class Usuario {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	
-	@NotNull(message= "O atributo Nome é Obrigatório!")
+	@NotBlank(message= "O atributo Nome é Obrigatório!")
+	@Size(min=3, max=255, message="O atributo Nome deve conter de 3 a 255 caracteres.")
 	private String nome;
 	
-	@Size(max=5000, message = "O link da foto não pode ser maior do que 5000 caracteres")
 	private String foto;
 	
-	@NotNull(message="O atributo Usuário é Obrigatório!")
+	@Schema(example="email@email.com.br")
+	@NotBlank(message="O atributo Usuário é obrigatório!")
 	@Email(message="O atributo Usuário deve ser um email válido!")
 	private String usuario;
 	
-	@NotBlank(message="O atributo Senha é Obrigatório!")
+	@NotNull(message="O atributo Senha é Obrigatório!")
 	@Size(min=8, message="A Senha deve ter no mínimo 8 caracteres")
 	private String senha;
 	
 	@OneToMany(mappedBy= "usuario", cascade=CascadeType.REMOVE)
 	@JsonIgnoreProperties("usuario")
 	private List<Postagem> postagem;
+	
+	public Usuario(Long id, String nome, String usuario, String senha, String foto) {
+	this.id = id;
+	this.nome = nome;
+	this.usuario = usuario;
+	this.senha = senha;
+	this.foto = foto;
+	}
+	
+	public Usuario() {
+	}
 	
 	/* Insira os Getters and Setters */
 
